@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BandAPI.Entities;
+using BandAPI.Exceptions;
 using BandAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,11 +10,12 @@ namespace BandAPI.Services
     {
         private readonly BandDbContext _bandsContext;
         private readonly IMapper _mapper;
-        public BandService(BandDbContext bandsContext, IMapper mapper)
+        private readonly ILogger<BandService> _logger;
+        public BandService(BandDbContext bandsContext, IMapper mapper, ILogger<BandService> logger)
         {
             _bandsContext = bandsContext;
             _mapper = mapper;
-
+            _logger = logger;   
         }
         public IEnumerable<BandDto> GetBands()
         {
@@ -36,7 +38,10 @@ namespace BandAPI.Services
                 .Where(x => x.Id == bandId)
                 .FirstOrDefault();
 
-
+            if (bandEntity == null)
+            {
+                throw new NotFoundException("Band not found");
+            }
 
             var bandDto = _mapper.Map<BandDto>(bandEntity);
             return bandDto;
@@ -51,35 +56,33 @@ namespace BandAPI.Services
 
         }
 
-        public bool Delete(int id)
+        public void Delete(int id)
         {
+            _logger.LogError($"Band with id {id} deleting action invoked.");
             var bandToDelete = _bandsContext.Bands.FirstOrDefault(x => x.Id == id);
+
             if (bandToDelete != null)
             {
                 _bandsContext.Remove(bandToDelete);
                 _bandsContext.SaveChanges();
-                return true;
+            
                 
             }
-            return false;
+            throw new NotFoundException("Band not found");
 
         }
-        public bool Update(UpdateBandDto dto, int bandId)
+        public void Update(UpdateBandDto dto, int bandId)
         {
             var bandEntity = _bandsContext.Bands.Where(x => x.Id == bandId).FirstOrDefault();
             if (bandEntity == null)
             {
-                return false;
+                throw new NotFoundException("Band not found");
             }
             bandEntity.Name = dto.Name;
             bandEntity.DateOfFoundation = dto.DateOfFoundation;
             _bandsContext.SaveChanges();
-            return true;
-
-
 
         }
-
 
     }
 }

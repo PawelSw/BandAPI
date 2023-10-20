@@ -13,6 +13,11 @@ namespace BandAPI.Profiles
             CreateMap<Album, AlbumDto>();
             CreateMap<Description, DescriptionDto>();
             CreateMap<Musician, MusicianDto>();
+            CreateMap<Musician, MusicianDtoWithListofBands>();
+            CreateMap<Band, BandDtoOnlyName>();
+
+        
+            CreateMap<CreateMusicianDto, Musician>();
 
             CreateMap<CreateBandDto, Band>()
                  .ForMember(x => x.Description,
@@ -20,6 +25,8 @@ namespace BandAPI.Profiles
                   { Genres = dto.Genres }));
 
             CreateMap<UpdateBandDto, Band>();
+            CreateMap<CreateAlbumDto, Album>();
+            CreateMap<Album, AlbumDto>();
         }
     }
 }

@@ -7,8 +7,8 @@ namespace BandAPI.Services
         BandDto GetBandById(int bandId);
         IEnumerable<BandDto> GetBands();
         int Create(CreateBandDto dto);
-        bool Delete(int id);
-        bool Update(UpdateBandDto dto, int bandId);
+        void Delete(int id);
+        void Update(UpdateBandDto dto, int bandId);
 
     }
 }

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace BandAPI.Controllers
 {
     [ApiController]
-    [Route("api/bands")]
+    [Route("api/band")]
     public class BandsController : ControllerBase
     {
 
@@ -40,43 +40,25 @@ namespace BandAPI.Controllers
         public ActionResult CreateBand([FromBody] CreateBandDto createBandDto)
         {
             int bandId = _bandService.Create(createBandDto);
-            return Created($"/api/bands/ {bandId}", null);
+            return Created($"/api/band/ {bandId}", null);
 
         }
 
         [HttpDelete("{id}")]
         public ActionResult Delete([FromRoute] int id)
         {
-            if (_bandService.Delete(id))
-                return NoContent();
-
-
-            return NotFound();
+            _bandService.Delete(id);
+             return NoContent();
         }
 
         [HttpPut("{id}")]
         public ActionResult Update([FromBody] UpdateBandDto dto, [FromRoute] int id)
         {
-            if (_bandService.Update(dto, id))
-                return Ok();
-            return NotFound();
-
-        
+            _bandService.Update(dto, id);
+             return Ok();
 
         }
 
-        //[HttpGet("{id}")]
-        //public ActionResult<BandDto> GetAllBands([FromRoute] int id)
-        //{
-        //    var result = _bandContext.Bands
-        //        .Include(x => x.Albums)
-        //        .Include(x => x.Musicians)
-        //        .Include(x => x.Description)
-        //        .FirstOrDefault(x => x.Id == id);
-        //    var bandDto = _mapper.Map<BandDto>(result);
-        //    return Ok(bandDto);
-
-        //}
     }
 }
 
