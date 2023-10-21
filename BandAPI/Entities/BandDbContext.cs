@@ -14,6 +14,8 @@ namespace BandAPI.Entities
         public DbSet<Album> Albums { get; set; }
         public DbSet<Description> Descriptions { get; set; }
         public DbSet<Musician> Musicians { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
