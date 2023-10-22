@@ -2,13 +2,16 @@
 using BandAPI.Entities;
 using BandAPI.Models;
 using BandAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace BandAPI.Controllers
 {
     [ApiController]
     [Route("api/band")]
+    [Authorize]
     public class BandsController : ControllerBase
     {
 
@@ -28,6 +31,7 @@ namespace BandAPI.Controllers
         }
 
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public ActionResult<BandDto> GetById([FromRoute] int id)
         {
             var band = _bandService.GetBandById(id);
@@ -37,8 +41,10 @@ namespace BandAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin,Manager")]
         public ActionResult CreateBand([FromBody] CreateBandDto createBandDto)
         {
+          
             int bandId = _bandService.Create(createBandDto);
             return Created($"/api/band/ {bandId}", null);
 

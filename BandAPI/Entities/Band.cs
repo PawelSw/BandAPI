@@ -13,6 +13,8 @@ namespace BandAPI.Entities
         public int DateOfFoundation { get; set; }
 
         public bool IsActive { get; set; }
+        public int? CreatedById { get; set; }
+        public virtual User CreatedBy { get; set; }
 
         public virtual Description Description { get; set; }
         public int DescriptionId { get; set; }

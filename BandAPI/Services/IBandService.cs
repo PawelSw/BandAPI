@@ -1,4 +1,6 @@
-﻿using BandAPI.Models;
+﻿using BandAPI.Entities;
+using BandAPI.Models;
+using System.Security.Claims;
 
 namespace BandAPI.Services
 {
